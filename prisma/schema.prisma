@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ProductImage {
+  admin_graphql_api_id String
+  alt                  Json?
+  created_at           String
+  height               Int
+  id                   Int
+  position             Int
+  product_id           Int
+  src                  String
+  updated_at           String
+  variant_ids          Int[]
+  width                Int
+}
+
+type ProductImages {
+  admin_graphql_api_id String
+  alt                  Json?
+  created_at           String
+  height               Int
+  id                   Int
+  position             Int
+  product_id           Int
+  src                  String
+  updated_at           String
+  variant_ids          Int[]
+  width                Int
+}
+
+type ProductOptions {
+  id         Int
+  name       String
+  position   Int
+  product_id Int
+  values     String[]
+}
+
+type ProductVariants {
+  admin_graphql_api_id   String?
+  barcode                String?
+  compare_at_price       String?
+  created_at             String?
+  fulfillment_service    String?
+  grams                  Int?
+  id                     Int?
+  image_id               Int?
+  inventory_item_id      Int?
+  inventory_management   String?
+  inventory_policy       String?
+  inventory_quantity     Int?
+  old_inventory_quantity Int?
+  option1                String?
+  option2                Json?
+  option3                Json?
+  position               Int?
+  price                  String?
+  product_id             Int?
+  requires_shipping      Boolean?
+  sku                    String?
+  taxable                Boolean?
+  title                  String?
+  updated_at             String?
+  weight                 Float?
+  weight_unit            String?
+}
+
+model Product {
+  id                   String            @id @default(auto()) @map("_id") @db.ObjectId
+  admin_graphql_api_id String?
+  body_html            String?
+  created_at           String
+  handle               String?
+  prod_id              Int            @unique
+  image                ProductImage?
+  images               ProductImages[]
+  options              ProductOptions[]
+  product_type         String?
+  published_at         String?
+  published_scope      String?
+  status               String?
+  tags                 String?
+  template_suffix      Json?
+  title                String?           @unique
+  updated_at           String?
+  variants             ProductVariants[]
+  vendor               String?
+  User                 User?             @relation(fields: [userId], references: [id])
+  userId               String?           @db.ObjectId
+}
+
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime  @default(now())
+  password String
+  username String    @unique
+  prducts  Product[]
+}
