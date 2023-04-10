@@ -43,6 +43,7 @@ export const signin = async (req: any, res: any) => {
         res.json({ message: "Wrong username & password" })
         return
     }
+  
     req.session.user = user;
     const token = createJWT(user)
     res.json({ token })
